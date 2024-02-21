@@ -1,0 +1,4 @@
+{
+  "jwtPrivateKey": "1234",
+  "db": "mongodb+srv://anil:Test1234@cluster1.zcf0yks.mongodb.net/node-tuts?retryWrites=true&w=majority"
+}
