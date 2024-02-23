@@ -1,20 +1,19 @@
-// import Fawn from "fawn";
 import express from "express";
 import mongoose from "mongoose";
 import { Movie } from "../models/movie.js";
 import { Customer } from "../models/customer.js";
 import { Rental, validateRental as validate } from "../models/rental.js";
+import auth from "../middleware/auth.js";
+import validateObjectId from "../middleware/validateObjectId.js";
 
 const router = express.Router();
 
-// Fawn.init(mongoose);
-
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   const rentals = await Rental.find().sort("-dateOut");
   res.send(rentals);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -40,6 +39,27 @@ router.post("/", async (req, res) => {
     },
   });
 
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    await Rental.create([rental], { session });
+
+    await Movie.updateOne(
+      { _id: movie._id },
+      { $inc: { numberInStock: -1 } },
+      { session }
+    );
+
+    await session.commitTransaction();
+    res.send(rental);
+  } catch (ex) {
+    await session.abortTransaction();
+    res.status(500).send("Something failed.");
+  } finally {
+    await session.endSession();
+  }
+
   // try {
   //   new Fawn.Task()
   //     .save("rentals", rental)
@@ -58,7 +78,7 @@ router.post("/", async (req, res) => {
   // }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", [auth, validateObjectId], async (req, res) => {
   const rental = await Rental.findById(req.params.id);
 
   if (!rental)

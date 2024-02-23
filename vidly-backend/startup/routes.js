@@ -1,5 +1,5 @@
 import express from "express";
-import auth from "../routes/auth.js";
+import login from "../routes/login.js";
 import users from "../routes/users.js";
 import movies from "../routes/movies.js";
 import genres from "../routes/genres.js";
@@ -10,12 +10,17 @@ import customers from "../routes/customers.js";
 
 export default function (app) {
   app.use(express.json());
-  app.use("/api/genres", genres);
-  app.use("/api/customers", customers);
-  app.use("/api/movies", movies);
-  app.use("/api/rentals", rentals);
-  app.use("/api/users", users);
-  app.use("/api/auth", auth);
-  app.use("/api/returns", returns);
+  // user
+  app.use("/login", login);
+  app.use("/movies", movies);
+  app.use("/rentals", rentals);
+  app.use("/returns", returns);
+
+  // admin
+  app.use("/genres", genres);
+  app.use("/customers", customers);
+  app.use("/users", users);
+
+  // error handling
   app.use(error);
 }

@@ -1,14 +1,13 @@
-import winston from "winston";
 import express from "express";
 const app = express();
 
-// import logging from "./startup/logging.js";
+import logging from "./startup/logging.js";
 import routes from "./startup/routes.js";
 import db from "./startup/db.js";
 import config from "./startup/config.js";
 import validation from "./startup/validation.js";
 
-// logging();
+logging();
 routes(app);
 db();
 config();
