@@ -1,4 +1,3 @@
-import config from "config";
 import jwt from "jsonwebtoken";
 import Joi from "joi";
 import mongoose from "mongoose";
@@ -29,7 +28,7 @@ export const userSchema = new mongoose.Schema({
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
     { _id: this._id, isAdmin: this.isAdmin },
-    config.get("jwtPrivateKey")
+    process.env.JWT_PRIVATE_KEY
   );
   return token;
 };

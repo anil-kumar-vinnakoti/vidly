@@ -1,4 +1,0 @@
-{
-  "jwtPrivateKey": "APP_JWT_KEY",
-  "db": "DB_URI"
-}

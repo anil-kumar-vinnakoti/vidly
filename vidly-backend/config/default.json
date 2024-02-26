@@ -1,4 +1,0 @@
-{
-  "jwtPrivateKey": "1234",
-  "db": "mongodb+srv://anil:Test1234@cluster1.zcf0yks.mongodb.net/dev-rental-app?retryWrites=true&w=majority"
-}
