@@ -21,7 +21,7 @@ export default function () {
       new winston.transports.File({ filename: "logfile.log", level: "info" }),
       // Logging to MongoDB
       new winston.transports.MongoDB({
-        db: "mongodb+srv://anil:Test1234@cluster1.zcf0yks.mongodb.net/node-tuts",
+        db: process.env.DB_URI,
         options: { useNewUrlParser: true, useUnifiedTopology: true },
         level: "info",
       }),
